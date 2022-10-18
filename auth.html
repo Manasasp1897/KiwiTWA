@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication</title>
+  <script>
+  
+  var accessToken = "";
+
+  function authentication() {
+
+    if(isTokenValid()) {
+      console.log("Token is valid");
+      console.log("Token: " + accessToken);
+      return;
+    } else {
+        console.log("Token is not valid");
+    }
+
+    let queryParams = (new URL(document.location)).searchParams;
+    let refreshToken = queryParams.get("refreshtoken");
+    accessToken = refreshToken; // Need to verify
+    console.log("refreshToken: ", refreshToken);
+    fetch("https://cognito-idp.us-east-1.amazonaws.com/", {
+        headers: {
+            "X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth",
+            "Content-Type": "application/x-amz-json-1.1",
+        },
+        mode: 'cors',
+        cache: 'no-cache',
+        method: 'POST',
+        body: JSON.stringify({
+            ClientId: "fbp3d46laauisbsersr3ir51p",
+            AuthFlow: 'REFRESH_TOKEN_AUTH',
+            AuthParameters: {
+                REFRESH_TOKEN: refreshToken,
+                //SECRET_HASH: "your_secret", // In case you have configured client secret
+            }
+        }),
+    }).then((res) => {
+        return res.json(); // this will give jwt id and access tokens
+    }).then(data => {
+        console.log("result: ----------------");
+        console.log(data); // this will print jwt id and access tokens on console
+        console.log(data.AuthenticationResult.AccessToken);
+        accessToken = data.AuthenticationResult.AccessToken;
+    });
+  }
+
+  function isTokenValid() {
+      if(accessToken == "") {
+        return false;
+      }
+      const accessTokenPayload = JSON.parse(atob(accessToken.split(".")[1]));
+      console.log(Date.now());
+      console.log(accessTokenPayload.exp * 1000);
+      return Date.now() < accessTokenPayload.exp * 1000;
+  }
+  </script>
+</head>
+ <body>
+  <h4>Sign In</h4>
+   <!-- <button id="signin" onclick="authentication()">Fetch tokens</button> -->
+   <h4>Access Token:</h4>
+   <p>{{accessToken}}</p>
+ </body>
+</html>

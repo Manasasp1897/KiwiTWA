@@ -1,0 +1,25 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.kiwi.twa",
+    "sha256_cert_fingerprints":
+    ["B0:77:02:D5:22:B2:49:8E:BC:D5:D0:45:9B:89:5F:09:C1:69:C7:14:5A:B9:A9:8A:A1:00:AC:62:26:65:5F:5E"]
+  }
+},
+{
+  "relation": ["delegate_permission/common.get_login_creds"],
+  "target": {
+    "namespace": "web",
+    "site": "https://ajinkyaad7.github.io"
+  }
+},
+{
+  "relation": ["delegate_permission/common.get_login_creds"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.kiwi.twa",
+    "sha256_cert_fingerprints":
+    ["B0:77:02:D5:22:B2:49:8E:BC:D5:D0:45:9B:89:5F:09:C1:69:C7:14:5A:B9:A9:8A:A1:00:AC:62:26:65:5F:5E"]
+  }
+}]
